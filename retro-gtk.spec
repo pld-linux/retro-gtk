@@ -1,26 +1,29 @@
 Summary:	Toolkit to write GTK+3 based frontends to libretro
 Summary(pl.UTF-8):	Biblioteka narzędziowa do pisania opartych na GTK+3 frontendów do libretro
 Name:		retro-gtk
-Version:	0.10.0
+Version:	0.18.0
 Release:	1
-License:	GPL v3
+License:	GPL v3+
 Group:		X11/Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/retro-gtk/0.10/%{name}-%{version}.tar.xz
-# Source0-md5:	491ff8be9a52ec3c11193a98c8ca895c
-BuildRequires:	autoconf >= 2.50
-BuildRequires:	automake >= 1:1.11
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/retro-gtk/0.18/%{name}-%{version}.tar.xz
+# Source0-md5:	9acee11827d3e3a3ec26b43ed5de809f
+URL:		https://gitlab.gnome.org/GNOME/retro-gtk
 BuildRequires:	cairo-devel
 BuildRequires:	gettext-tools
-BuildRequires:	glib2-devel >= 2.0
+BuildRequires:	glib2-devel >= 1:2.50
 BuildRequires:	gobject-introspection-devel >= 0.6.7
-BuildRequires:	gtk+3-devel >= 3.0
-BuildRequires:	intltool >= 0.35.0
-BuildRequires:	libtool >= 2:2
+BuildRequires:	gtk+3-devel >= 3.22
+BuildRequires:	libepoxy-devel
+BuildRequires:	meson >= 0.43.0
+BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel
+BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	tar >= 1:1.22
-BuildRequires:	vala
+BuildRequires:	vala >= 2:0.22.0
 BuildRequires:	xz
+Requires:	glib2 >= 1:2.50
+Requires:	gtk+3 >= 3.22
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -36,10 +39,8 @@ Summary:	Header files for retro-gtk library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki retro-gtk
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	cairo-devel
-Requires:	glib2-devel >= 2.0
-Requires:	gtk+3-devel >= 3.0
-Requires:	pulseaudio-devel
+Requires:	gdk-pixbuf2-devel >= 2.0
+Requires:	glib2-devel >= 1:2.50
 
 %description devel
 Header files for retro-gtk library.
@@ -67,24 +68,14 @@ API biblioteki retro-gtk dla języka Vala.
 %setup -q
 
 %build
-%{__intltoolize}
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--disable-silent-rules
-%{__make}
+%meson build
+
+%ninja_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
-
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
-%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/retro-gtk
+%ninja_install -C build
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -94,19 +85,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS
-%attr(755,root,root) %{_libdir}/libretro-gtk.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libretro-gtk.so.0
-%{_libdir}/girepository-1.0/Retro-0.10.typelib
+%doc AUTHORS NEWS README.md UNIMPLEMENTED.md
+%attr(755,root,root) %{_bindir}/retro-demo
+%attr(755,root,root) %{_libdir}/libretro-gtk-0.14.so.0
+%{_libdir}/girepository-1.0/Retro-0.14.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libretro-gtk.so
-%{_includedir}/retro-gtk-0.10
-%{_pkgconfigdir}/retro-gtk-0.10.pc
-%{_datadir}/gir-1.0/Retro-0.10.gir
+%attr(755,root,root) %{_libdir}/libretro-gtk-0.14.so
+%{_includedir}/retro-gtk
+%{_datadir}/gir-1.0/Retro-0.14.gir
+%{_pkgconfigdir}/retro-gtk-0.14.pc
 
 %files -n vala-retro-gtk
 %defattr(644,root,root,755)
-%{_datadir}/vala/vapi/retro-gtk-0.10.deps
-%{_datadir}/vala/vapi/retro-gtk-0.10.vapi
+%{_datadir}/vala/vapi/retro-gtk-0.14.deps
+%{_datadir}/vala/vapi/retro-gtk-0.14.vapi
