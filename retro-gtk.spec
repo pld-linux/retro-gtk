@@ -1,12 +1,12 @@
 Summary:	Toolkit to write GTK+3 based frontends to libretro
 Summary(pl.UTF-8):	Biblioteka narzędziowa do pisania opartych na GTK+3 frontendów do libretro
 Name:		retro-gtk
-Version:	0.18.0
+Version:	0.18.1
 Release:	1
 License:	GPL v3+
 Group:		X11/Libraries
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/retro-gtk/0.18/%{name}-%{version}.tar.xz
-# Source0-md5:	9acee11827d3e3a3ec26b43ed5de809f
+# Source0-md5:	d8ebec681ca21f038821171731310931
 URL:		https://gitlab.gnome.org/GNOME/retro-gtk
 BuildRequires:	cairo-devel
 BuildRequires:	gettext-tools
@@ -14,7 +14,7 @@ BuildRequires:	glib2-devel >= 1:2.50
 BuildRequires:	gobject-introspection-devel >= 0.6.7
 BuildRequires:	gtk+3-devel >= 3.22
 BuildRequires:	libepoxy-devel
-BuildRequires:	meson >= 0.43.0
+BuildRequires:	meson >= 0.50.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel
