@@ -1,18 +1,22 @@
+#
+# Conditional build:
+%bcond_without	apidocs	# API documentation
+
 Summary:	Toolkit to write GTK+3 based frontends to libretro
 Summary(pl.UTF-8):	Biblioteka narzędziowa do pisania opartych na GTK+3 frontendów do libretro
 Name:		retro-gtk
-Version:	0.18.1
+Version:	1.0.0
 Release:	1
 License:	GPL v3+
 Group:		X11/Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/retro-gtk/0.18/%{name}-%{version}.tar.xz
-# Source0-md5:	d8ebec681ca21f038821171731310931
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/retro-gtk/1.0/%{name}-%{version}.tar.xz
+# Source0-md5:	fc9c9e74677b127d1e4fea4bd840a290
 URL:		https://gitlab.gnome.org/GNOME/retro-gtk
-BuildRequires:	cairo-devel
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.50
 BuildRequires:	gobject-introspection-devel >= 0.6.7
 BuildRequires:	gtk+3-devel >= 3.22
+%{?with_apidocs:BuildRequires:	gtk-doc}
 BuildRequires:	libepoxy-devel
 BuildRequires:	meson >= 0.50.0
 BuildRequires:	ninja >= 1.5
@@ -22,6 +26,10 @@ BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vala >= 2:0.22.0
 BuildRequires:	xz
+# fake dependency: retro-gtk 1.0 is for gnome-games 3.38, which use rusted librsvg
+# and it's to avoid introducing retro-gtk incompatible with rustless gnome-games 3.34
+# until Th gets rusted librsvg
+BuildRequires:	librsvg-devel >= 1:2.46
 Requires:	glib2 >= 1:2.50
 Requires:	gtk+3 >= 3.22
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -54,7 +62,7 @@ Summary(pl.UTF-8):	API biblioteki retro-gtk dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	vala >= 2:0.22.0
-%if "%{_rpmversion}" >= "5"
+%if "%{_rpmversion}" >= "4.6"
 BuildArch:	noarch
 %endif
 
@@ -64,11 +72,26 @@ retro-gtk library API for Vala language.
 %description -n vala-retro-gtk -l pl.UTF-8
 API biblioteki retro-gtk dla języka Vala.
 
+%package apidocs
+Summary:	API documentation for retro-gtk library
+Summary(pl.UTF-8):	Dokumentacja API biblioteki retro-gtk
+Group:		Documentation
+
+%description apidocs
+API documentation for retro-gtk library.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API biblioteki retro-gtk.
+
 %prep
 %setup -q
 
 %build
-%meson build
+%meson build \
+%if %{with apidocs}
+	-Dbuild-doc=true \
+	-Dinstall-doc=true
+%endif
 
 %ninja_build -C build
 
@@ -87,17 +110,24 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README.md UNIMPLEMENTED.md
 %attr(755,root,root) %{_bindir}/retro-demo
-%attr(755,root,root) %{_libdir}/libretro-gtk-0.14.so.0
-%{_libdir}/girepository-1.0/Retro-0.14.typelib
+%attr(755,root,root) %{_libexecdir}/retro-runner
+%attr(755,root,root) %{_libdir}/libretro-gtk-1.so.0
+%{_libdir}/girepository-1.0/Retro-1.typelib
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libretro-gtk-0.14.so
+%attr(755,root,root) %{_libdir}/libretro-gtk-1.so
 %{_includedir}/retro-gtk
-%{_datadir}/gir-1.0/Retro-0.14.gir
-%{_pkgconfigdir}/retro-gtk-0.14.pc
+%{_datadir}/gir-1.0/Retro-1.gir
+%{_pkgconfigdir}/retro-gtk-1.pc
 
 %files -n vala-retro-gtk
 %defattr(644,root,root,755)
-%{_datadir}/vala/vapi/retro-gtk-0.14.deps
-%{_datadir}/vala/vapi/retro-gtk-0.14.vapi
+%{_datadir}/vala/vapi/retro-gtk-1.deps
+%{_datadir}/vala/vapi/retro-gtk-1.vapi
+
+%if %{with apidocs}
+%files apidocs
+%defattr(644,root,root,755)
+%{_gtkdocdir}/retro-gtk
+%endif
