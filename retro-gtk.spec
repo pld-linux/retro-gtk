@@ -5,12 +5,12 @@
 Summary:	Toolkit to write GTK+3 based frontends to libretro
 Summary(pl.UTF-8):	Biblioteka narzędziowa do pisania opartych na GTK+3 frontendów do libretro
 Name:		retro-gtk
-Version:	1.0.0
+Version:	1.0.1
 Release:	1
 License:	GPL v3+
 Group:		X11/Libraries
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/retro-gtk/1.0/%{name}-%{version}.tar.xz
-# Source0-md5:	fc9c9e74677b127d1e4fea4bd840a290
+Source0:	https://download.gnome.org/sources/retro-gtk/1.0/%{name}-%{version}.tar.xz
+# Source0-md5:	c191e441fdc02e63e47e31f95923206a
 URL:		https://gitlab.gnome.org/GNOME/retro-gtk
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.50
@@ -22,7 +22,7 @@ BuildRequires:	meson >= 0.50.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	pulseaudio-devel
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 1.752
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	vala >= 2:0.22.0
 BuildRequires:	xz
@@ -62,9 +62,7 @@ Summary(pl.UTF-8):	API biblioteki retro-gtk dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	vala >= 2:0.22.0
-%if "%{_rpmversion}" >= "4.6"
-BuildArch:	noarch
-%endif
+%{?noarchpackage}
 
 %description -n vala-retro-gtk
 retro-gtk library API for Vala language.
@@ -76,6 +74,7 @@ API biblioteki retro-gtk dla języka Vala.
 Summary:	API documentation for retro-gtk library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki retro-gtk
 Group:		Documentation
+%{?noarchpackage}
 
 %description apidocs
 API documentation for retro-gtk library.
