@@ -62,7 +62,7 @@ Summary(pl.UTF-8):	API biblioteki retro-gtk dla języka Vala
 Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	vala >= 2:0.22.0
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description -n vala-retro-gtk
 retro-gtk library API for Vala language.
@@ -74,7 +74,7 @@ API biblioteki retro-gtk dla języka Vala.
 Summary:	API documentation for retro-gtk library
 Summary(pl.UTF-8):	Dokumentacja API biblioteki retro-gtk
 Group:		Documentation
-%{?noarchpackage}
+BuildArch:	noarch
 
 %description apidocs
 API documentation for retro-gtk library.
