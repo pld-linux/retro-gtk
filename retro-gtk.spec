@@ -6,7 +6,7 @@ Summary:	Toolkit to write GTK+3 based frontends to libretro
 Summary(pl.UTF-8):	Biblioteka narzędziowa do pisania opartych na GTK+3 frontendów do libretro
 Name:		retro-gtk
 Version:	1.0.2
-Release:	1
+Release:	2
 License:	GPL v3+
 Group:		X11/Libraries
 Source0:	https://download.gnome.org/sources/retro-gtk/1.0/%{name}-%{version}.tar.xz
